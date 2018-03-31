@@ -3,21 +3,17 @@ package de.boscall.boscall
 
 import android.app.Fragment
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.preference.PreferenceFragment
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class SettingsFragment : Fragment() {
+class SettingsFragment : PreferenceFragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_settings, container, false)
+        addPreferencesFromResource(R.xml.settings)
     }
-
 }// Required empty public constructor

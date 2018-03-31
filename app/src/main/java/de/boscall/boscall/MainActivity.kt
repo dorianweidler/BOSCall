@@ -1,7 +1,6 @@
 package de.boscall.boscall
 
 import android.app.Fragment
-import android.app.FragmentManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -31,11 +30,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val manager: FragmentManager = fragmentManager
-        var fragment: Fragment? = manager.findFragmentById(R.id.ReplaceFrame)
-        if (fragment == null) {
-            fragment = AlarmlistFragment()
-            manager.beginTransaction().add(R.id.ReplaceFrame, fragment).commit()
+        if (fragmentManager.findFragmentById(R.id.replaceFrame) == null) {
+            switchFragment(FragmentID.ALARMLIST)
         }
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -57,12 +53,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (fragment != null) { // in case code is extended and not properly modified
-            val transaction = fragmentManager.beginTransaction()
-
-            transaction.replace(R.id.ReplaceFrame, fragment)
-            transaction.addToBackStack(null)
-
-            transaction.commit()
+            fragmentManager.beginTransaction()
+                    .replace(R.id.replaceFrame, fragment)
+                    .commit()
         }
     }
 
