@@ -4,7 +4,10 @@ import android.app.Fragment
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +38,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        val token = FirebaseInstanceId.getInstance().token
+        Log.d(this.javaClass.name, "FCM Registration Token: " + token!!)
     }
 
     fun switchFragment(fragmentId: FragmentID) {
@@ -52,11 +58,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        if (fragment != null) { // in case code is extended and not properly modified
-            fragmentManager.beginTransaction()
-                    .replace(R.id.replaceFrame, fragment)
-                    .commit()
-        }
+        fragmentManager.beginTransaction()
+                .replace(R.id.replaceFrame, fragment)
+                .commit()
+
+        /*if (fragment != null) { // in case code is extended and not properly modified
+
+        }*/
     }
 
     enum class FragmentID {
