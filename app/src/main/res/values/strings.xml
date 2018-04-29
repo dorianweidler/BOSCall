@@ -4,6 +4,24 @@
     <string name="nav_title_news">News</string>
     <string name="nav_title_settings">Settings</string>
 
+    <!-- Settings texts -->
+    <string name="grp_settings_general">General</string>
+    <string name="itm_push">Push notification</string>
+    <string name="itmDesc_push">Sets whether you\'d like to get push notifications or not. (Currently permanently enabled, probably changed later)</string>
+    <string name="itm_default_alarmtone">Default alarmtone</string>
+    <string name="itmDesc_default_alarmtone">Set your default alarmtone.</string>
+
+    <string name="grp_settings_registration">Registration</string>
+    <string name="itm_register_unit">Register unit</string>
+    <string name="itmDesc_register_unit">Open\'s the QR-Code reader to register your device to a new unit.</string>
+
+    <string name="grp_settings_registered_units">Registered units</string>
+
+    <!-- Notification channels -->
+    <string name="not_channel_alarm">boscall_alarm_channel</string>
+    <string name="not_channel_alarm_name">Alarm Channel</string>
+    <string name="not_channel_alarm_desc">Channel for alarms</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

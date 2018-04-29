@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         val token = FirebaseInstanceId.getInstance().token
-        Log.d(this.javaClass.name, "FCM Registration Token: " + token!!)
+        Log.d(this.javaClass.name, "FCM Registration Token: " + token)
     }
 
     fun switchFragment(fragmentId: FragmentID) {

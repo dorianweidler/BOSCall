@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="chkPush"
-        android:title="Push" />
-    <RingtonePreference
-        android:key="ringtone_preference_1"
-        android:title="Ringtone preference" />
+
+    <PreferenceCategory android:title="@string/grp_settings_general">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:key="itmPush"
+            android:selectable="false"
+            android:summary="@string/itmDesc_push"
+            android:title="@string/itm_push" />
+        <RingtonePreference
+            android:icon="@drawable/ic_music_note_black_24dp"
+            android:key="itmDefaultAlarmtone"
+            android:summary="@string/itmDesc_default_alarmtone"
+            android:title="@string/itm_default_alarmtone" />
+    </PreferenceCategory>
+
+    <!-- Registration -->
+    <PreferenceCategory android:title="@string/grp_settings_registration">
+        <Preference
+            android:icon="@drawable/ic_add_black_24dp"
+            android:key="itmAddUnit"
+            android:summary="@string/itmDesc_register_unit"
+            android:title="@string/itm_register_unit" />
+    </PreferenceCategory>
+
+    <!-- Registered units -->
+    <PreferenceCategory
+        android:key="grpRegisteredUnits"
+        android:title="@string/grp_settings_registered_units"></PreferenceCategory>
 </PreferenceScreen>

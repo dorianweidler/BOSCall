@@ -10,6 +10,7 @@ class BosCallIdService : FirebaseInstanceIdService() {
     val TAG = this.javaClass.name
 
     override fun onTokenRefresh() {
+        Log.d(TAG, "TOKEN REFRESH")
         // Get updated InstanceID token.
         val refreshedToken = FirebaseInstanceId.getInstance().token
         Log.d(TAG, "Refreshed token: " + refreshedToken!!)
