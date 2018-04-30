@@ -5,9 +5,11 @@
     tools:context="de.boscall.boscall.AlarmlistFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
+        android:id="@+id/alarmList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Alarmlist fragment" />
+        android:scrollbars="vertical" />
 
 </FrameLayout>
