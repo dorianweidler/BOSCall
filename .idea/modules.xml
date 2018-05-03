@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BOSCall.iml" filepath="$PROJECT_DIR$/BOSCall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BOSAdmin.iml" filepath="$PROJECT_DIR$/BOSAdmin.iml" />
+      <module fileurl="file://C:\Users\c.suffel\Documents\Studium\Semester 3\Mobile Anwendungen mit Android\Projekt\BOSAdmin\BOSCall.iml" filepath="C:\Users\c.suffel\Documents\Studium\Semester 3\Mobile Anwendungen mit Android\Projekt\BOSAdmin\BOSCall.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
