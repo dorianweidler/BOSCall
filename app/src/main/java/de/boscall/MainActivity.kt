@@ -6,7 +6,6 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.firebase.iid.FirebaseInstanceId
-import de.boscall.boscall.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 
