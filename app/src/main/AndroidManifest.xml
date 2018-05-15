@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="de.boscall.MainActivity"
             android:label="@string/app_name">
             <intent-filter android:label="BOSCall">
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
         </activity>
 
         <service
-            android:name=".services.BosCallIdService"
+            android:name="de.boscall.services.BosCallIdService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -28,7 +28,7 @@
         </service>
 
         <service
-            android:name=".services.BosCallMessagingService"
+            android:name="de.boscall.services.BosCallMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
