@@ -17,18 +17,4 @@
             android:summary="@string/itmDesc_default_alarmtone"
             android:title="@string/itm_default_alarmtone" />
     </PreferenceCategory>
-
-    <!-- Registration -->
-    <PreferenceCategory android:title="@string/grp_settings_registration">
-        <Preference
-            android:icon="@drawable/ic_add_black_24dp"
-            android:key="itmAddUnit"
-            android:summary="@string/itmDesc_register_unit"
-            android:title="@string/itm_register_unit" />
-    </PreferenceCategory>
-
-    <!-- Registered units -->
-    <PreferenceCategory
-        android:key="grpRegisteredUnits"
-        android:title="@string/grp_settings_registered_units"></PreferenceCategory>
 </PreferenceScreen>

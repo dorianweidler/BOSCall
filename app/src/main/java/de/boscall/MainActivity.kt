@@ -11,30 +11,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.nav_alarmlist -> {
-                switchFragment(FragmentID.ALARMLIST)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_news -> {
-                switchFragment(FragmentID.NEWS)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_settings -> {
-                switchFragment(FragmentID.SETTINGS)
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item -> switchFragment(item.itemId) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if (fragmentManager.findFragmentById(R.id.replaceFrame) == null) {
-            switchFragment(FragmentID.ALARMLIST)
+            switchFragment(R.id.nav_alarmlist)
         }
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -43,18 +27,24 @@ class MainActivity : AppCompatActivity() {
         Log.d(this.javaClass.name, "FCM Registration Token: " + token)
     }
 
-    fun switchFragment(fragmentId: FragmentID) {
+    fun switchFragment(navId: Int): Boolean {
         val fragment: Fragment?
 
-        when (fragmentId) {
-            FragmentID.ALARMLIST -> {
+        when (navId) {
+            R.id.nav_alarmlist -> {
                 fragment = AlarmlistFragment()
             }
-            FragmentID.NEWS -> {
+            R.id.nav_news -> {
                 fragment = NewsFragment()
             }
-            FragmentID.SETTINGS -> {
+            R.id.nav_settings -> {
                 fragment = SettingsFragment()
+            }
+            R.id.nav_units -> {
+                fragment = UnitsFragment()
+            }
+            else -> {
+                return false
             }
         }
 
@@ -62,12 +52,10 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.replaceFrame, fragment)
                 .commit()
 
-        /*if (fragment != null) { // in case code is extended and not properly modified
-
-        }*/
+        return true
     }
 
     enum class FragmentID {
-        ALARMLIST, NEWS, SETTINGS
+        ALARMLIST, NEWS, UNITS, SETTINGS
     }
 }

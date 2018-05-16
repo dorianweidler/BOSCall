@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
 import android.util.Log
-import de.boscall.boscall.R
 
 
 /**
@@ -17,7 +16,6 @@ class SettingsFragment : PreferenceFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         addPreferencesFromResource(R.xml.settings)
     }
 

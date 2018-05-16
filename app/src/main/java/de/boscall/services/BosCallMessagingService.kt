@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import de.boscall.boscall.R
+import de.boscall.R
 
 
 class BosCallMessagingService : FirebaseMessagingService() {

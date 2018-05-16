@@ -3,6 +3,7 @@
     <string name="nav_title_alarmlist">Alarmlist</string>
     <string name="nav_title_news">News</string>
     <string name="nav_title_settings">Settings</string>
+    <string name="nav_title_units">Units</string>
 
     <!-- Settings texts -->
     <string name="grp_settings_general">General</string>
@@ -11,17 +12,19 @@
     <string name="itm_default_alarmtone">Default alarmtone</string>
     <string name="itmDesc_default_alarmtone">Set your default alarmtone.</string>
 
-    <string name="grp_settings_registration">Registration</string>
-    <string name="itm_register_unit">Register unit</string>
-    <string name="itmDesc_register_unit">Open\'s the QR-Code reader to register your device to a new unit.</string>
+    <!-- Units texts -->
+    <string name="lblUnits">Units</string>
 
-    <string name="grp_settings_registered_units">Registered units</string>
+    <string name="dlg_confirmDelete_title">Are you sure?</string>
+    <string name="dlg_confirmDelete_message">Are you sure to delete the unit? There\'s no way back!</string>
+    <string name="dlg_confirmDelete_btnYes">Yes</string>
+    <string name="dlg_confirmDelete_btnNo">No</string>
 
     <!-- Notification channels -->
     <string name="not_channel_alarm">boscall_alarm_channel</string>
     <string name="not_channel_alarm_name">Alarm Channel</string>
     <string name="not_channel_alarm_desc">Channel for alarms</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Unit Reader -->
+    <string name="unitReader_toast_unit_found">Unit found! Registering now!</string>
 </resources>
