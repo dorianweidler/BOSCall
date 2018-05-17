@@ -6,8 +6,10 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Fragment
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
@@ -22,6 +24,7 @@ import android.widget.Toast
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import de.boscall.constants.ServiceConfiguration
 import de.boscall.dto.Registration
 import de.boscall.dto.RegistrationRequest
 import de.boscall.dto.UnregistrationRequest
@@ -47,7 +50,7 @@ class UnitsFragment : Fragment() {
     private val simpleAdapter = SimpleRegistrationAdapter(mutableListOf())
     private val ZXING_CAMERA_PERMISSION = 1
     private val UNIT_READER_REQUEST = 1
-    private val registrationService = Retrofit.Builder().baseUrl("http://10.0.96.118:8080/api/").addConverterFactory(GsonConverterFactory.create()).build().create(BosCallWebAPIService::class.java)
+    private val SERVICE = Retrofit.Builder().baseUrl(ServiceConfiguration.API_ADDRESS).addConverterFactory(GsonConverterFactory.create()).build().create(BosCallWebAPIService::class.java)
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -57,7 +60,6 @@ class UnitsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         initialize()
     }
 
@@ -98,12 +100,6 @@ class UnitsFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        // Load units
-        /*val unitStorage = File(context.filesDir, "units.json")
-        val ois = ObjectInputStream(FileInputStream(unitStorage))
-        var units: List<UnitDTO> = ois.readObject() as List<UnitDTO>*/
-
-
         // Setup add-click handler
         btnAddUnit.setOnClickListener {
             if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -139,7 +135,7 @@ class UnitsFragment : Fragment() {
                 Log.d(javaClass.name, "= Registration data =: ${registrationData}")
                 val request = RegistrationRequest(registrationData.getLong("id"), registrationData.getString("secret"), FirebaseInstanceId.getInstance().token
                         ?: "")
-                val call = registrationService.registerUnit(request)
+                val call = SERVICE.registerUnit(request)
                 call.enqueue(object : Callback<Registration> {
                     override fun onFailure(call: Call<Registration>?, t: Throwable?) {
                         Log.d(javaClass.name, "Service call failed")
@@ -187,6 +183,11 @@ class UnitsFragment : Fragment() {
 
     private fun addRegistration(registration: Registration) {
         simpleAdapter.addItem(registration)
+        val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        val editor = sharedPref.edit()
+        editor.putLong("userId", registration.userId)
+        editor.putString("apiKey", registration.apiKey)
+        editor.apply()
         storeRegistrations(simpleAdapter.getList())
     }
 
@@ -207,7 +208,7 @@ class UnitsFragment : Fragment() {
         val registrationDeleted = simpleAdapter[position]
 
         val unregistrationRequest = UnregistrationRequest(registrationDeleted.unitId, registrationDeleted.apiKey, registrationDeleted.userId)
-        registrationService.unregisterUnit(unregistrationRequest).enqueue(object : Callback<ResponseBody> {
+        SERVICE.unregisterUnit(unregistrationRequest).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
                 Log.d(javaClass.name, "Service call failed")
                 Toast.makeText(activity, getString(R.string.unitReader_toast_serviceCall_failed), Toast.LENGTH_LONG).show()

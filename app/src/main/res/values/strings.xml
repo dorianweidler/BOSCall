@@ -31,4 +31,5 @@
 
     <!-- row_item -->
     <string name="unitItem_placeholder" translatable="false">Unit placeholder</string>
+    <string name="apiAddress">http://10.0.96.118:8080/api/</string>
 </resources>
