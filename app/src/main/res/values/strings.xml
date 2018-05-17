@@ -7,21 +7,18 @@
 
     <!-- Settings texts -->
     <string name="grp_settings_general">General</string>
-    <string name="itm_push">Push notification</string>
-    <string name="itmDesc_push">Sets whether you\'d like to get push notifications or not. (Currently permanently enabled, probably changed later)</string>
     <string name="itm_default_alarmtone">Default alarmtone</string>
     <string name="itmDesc_default_alarmtone">Set your default alarmtone.</string>
 
     <!-- Units texts -->
     <string name="lblUnits">Units</string>
-
     <string name="dlg_confirmDelete_title">Are you sure?</string>
     <string name="dlg_confirmDelete_message">Are you sure to delete the unit? There\'s no way back!</string>
     <string name="dlg_confirmDelete_btnYes">Yes</string>
     <string name="dlg_confirmDelete_btnNo">No</string>
 
     <!-- Notification channels -->
-    <string name="not_channel_alarm">boscall_alarm_channel</string>
+    <string name="not_channel_alarm" translatable="false">boscall_alarm_channel</string>
     <string name="not_channel_alarm_name">Alarm Channel</string>
     <string name="not_channel_alarm_desc">Channel for alarms</string>
 
@@ -31,5 +28,7 @@
     <string name="unitReader_toast_registration_failed">Registration failed, contact license holder!</string>
     <string name="unitReader_toast_unregistration_failed">Unregistration failed, contact license holder!</string>
     <string name="unitReader_toast_permissionRequest_failed">Please grant camera permission to use the QR Scanner</string>
-    <string name="unitReader_no_units_registered">No units registered yet.</string>
+
+    <!-- row_item -->
+    <string name="unitItem_placeholder" translatable="false">Unit placeholder</string>
 </resources>

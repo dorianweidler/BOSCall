@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import de.boscall.dto.Registration
-import kotlinx.android.synthetic.main.row_item.view.*
+import kotlinx.android.synthetic.main.unit_item.view.*
 
 class SimpleRegistrationAdapter(private val items: MutableList<Registration>) : RecyclerView.Adapter<SimpleRegistrationAdapter.VH>() {
 
@@ -33,10 +33,10 @@ class SimpleRegistrationAdapter(private val items: MutableList<Registration>) : 
     fun getList(): MutableList<Registration> = items
 
     class VH(parent: ViewGroup) : RecyclerView.ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.row_item, parent, false)) {
+            LayoutInflater.from(parent.context).inflate(R.layout.unit_item, parent, false)) {
 
         fun bind(registration: Registration) = with(itemView) {
-            rowName.text = registration.unitName
+            unitName.text = registration.unitName
         }
     }
 }

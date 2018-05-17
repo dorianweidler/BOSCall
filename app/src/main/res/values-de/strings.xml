@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BOSCall</string>
+    <string name="nav_title_alarmlist">Alarmliste</string>
+    <string name="nav_title_news">News</string>
+    <string name="nav_title_settings">Einstellungen</string>
+    <string name="nav_title_units">Einheiten</string>
+    <string name="grp_settings_general">Allgemein</string>
+    <string name="itm_default_alarmtone">Standard Alarmton</string>
+    <string name="itmDesc_default_alarmtone">Setzen Sie Ihren Standard Alarmton</string>
+    <string name="lblUnits">Einheiten</string>
+    <string name="dlg_confirmDelete_title">Sicher?</string>
+    <string name="dlg_confirmDelete_message">Sind Sie sich sicher? Diese Aktion ist nicht umkehrbar!</string>
+    <string name="dlg_confirmDelete_btnYes">Ja</string>
+    <string name="dlg_confirmDelete_btnNo">Nein</string>
+    <string name="not_channel_alarm_name">Alarm Kanal</string>
+    <string name="not_channel_alarm_desc">Kanal für Alarmierungen</string>
+    <string name="unitReader_toast_unit_found">Einheit gefunden, registrieren...</string>
+    <string name="unitReader_toast_serviceCall_failed">Dienstaufruf fehlgeschlagen, bitte Netzwerk überprüfen!</string>
+    <string name="unitReader_toast_registration_failed">Registration fehlgeschlagen, Lizenznehmer kontaktieren!</string>
+    <string name="unitReader_toast_unregistration_failed">Abmeldung fehlgeschlagen, Lizenznehmer kontaktieren!</string>
+    <string name="unitReader_toast_permissionRequest_failed">Bitte erlauben Sie Kamerazugriff, ohne diesen ist das QR-Code scannen nicht möglich.</string>
+    <string name="unitItem_placeholder" translatable="false">Einheiten Platzhalter</string>
+</resources>
