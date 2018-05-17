@@ -27,6 +27,7 @@ import de.boscall.dto.RegistrationRequest
 import de.boscall.dto.UnregistrationRequest
 import de.boscall.services.BosCallWebAPIService
 import kotlinx.android.synthetic.main.fragment_units.*
+import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -206,13 +207,13 @@ class UnitsFragment : Fragment() {
         val registrationDeleted = simpleAdapter[position]
 
         val unregistrationRequest = UnregistrationRequest(registrationDeleted.unitId, registrationDeleted.apiKey, registrationDeleted.userId)
-        registrationService.unregisterUnit(unregistrationRequest).enqueue(object : Callback<Registration> {
-            override fun onFailure(call: Call<Registration>?, t: Throwable?) {
+        registrationService.unregisterUnit(unregistrationRequest).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
                 Log.d(javaClass.name, "Service call failed")
                 Toast.makeText(activity, getString(R.string.unitReader_toast_serviceCall_failed), Toast.LENGTH_LONG).show()
             }
 
-            override fun onResponse(call: Call<Registration>?, response: Response<Registration>) {
+            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
                 if (response.code() == 200 || response.code() == 204) {
                     simpleAdapter.removeAt(position)
                     storeRegistrations(simpleAdapter.getList())
