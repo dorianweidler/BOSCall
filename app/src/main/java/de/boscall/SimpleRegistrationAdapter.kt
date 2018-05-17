@@ -3,9 +3,10 @@ package de.boscall
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import de.boscall.dto.Registration
 import kotlinx.android.synthetic.main.row_item.view.*
 
-class SimpleAdapter(private val items: MutableList<String>) : RecyclerView.Adapter<SimpleAdapter.VH>() {
+class SimpleRegistrationAdapter(private val items: MutableList<Registration>) : RecyclerView.Adapter<SimpleRegistrationAdapter.VH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         return VH(parent)
@@ -17,8 +18,8 @@ class SimpleAdapter(private val items: MutableList<String>) : RecyclerView.Adapt
 
     override fun getItemCount(): Int = items.size
 
-    fun addItem(name: String) {
-        items.add(name)
+    fun addItem(registration: Registration) {
+        items.add(registration)
         notifyItemInserted(items.size)
     }
 
@@ -27,11 +28,15 @@ class SimpleAdapter(private val items: MutableList<String>) : RecyclerView.Adapt
         notifyItemRemoved(position)
     }
 
+    operator fun get(position: Int): Registration = items[position]
+
+    fun getList(): MutableList<Registration> = items
+
     class VH(parent: ViewGroup) : RecyclerView.ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.row_item, parent, false)) {
 
-        fun bind(name: String) = with(itemView) {
-            rowName.text = name
+        fun bind(registration: Registration) = with(itemView) {
+            rowName.text = registration.unitName
         }
     }
 }

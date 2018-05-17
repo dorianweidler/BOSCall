@@ -25,7 +25,7 @@ class UnitReaderActivity : Activity(), ZXingScannerView.ResultHandler {
                 return ResizableViewFinder(context)
             }
         }
-        mScannerView.setAspectTolerance(0.5f)
+        mScannerView.setAspectTolerance(0.6f)
         content_frame.addView(mScannerView)
     }
 
@@ -57,7 +57,7 @@ class UnitReaderActivity : Activity(), ZXingScannerView.ResultHandler {
         }
 
         override fun getFramingRect(): Rect {
-            val rect: Rect = Rect()
+            val rect = Rect()
             content_frame.getDrawingRect(rect)
             return rect
         }

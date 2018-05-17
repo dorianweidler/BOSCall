@@ -27,4 +27,9 @@
 
     <!-- Unit Reader -->
     <string name="unitReader_toast_unit_found">Unit found! Registering now!</string>
+    <string name="unitReader_toast_serviceCall_failed">Service call failed, please check your network!</string>
+    <string name="unitReader_toast_registration_failed">Registration failed, contact license holder!</string>
+    <string name="unitReader_toast_unregistration_failed">Unregistration failed, contact license holder!</string>
+    <string name="unitReader_toast_permissionRequest_failed">Please grant camera permission to use the QR Scanner</string>
+    <string name="unitReader_no_units_registered">No units registered yet.</string>
 </resources>

@@ -5,7 +5,6 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Fragment
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -20,17 +19,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import de.boscall.dto.Registration
+import de.boscall.dto.RegistrationRequest
+import de.boscall.dto.UnregistrationRequest
+import de.boscall.services.BosCallWebAPIService
 import kotlinx.android.synthetic.main.fragment_units.*
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
+import java.io.PrintWriter
+import java.util.*
 
 
 /**
  * A simple [Fragment] subclass.
  */
 class UnitsFragment : Fragment() {
-
-    private val simpleAdapter = SimpleAdapter((1..5).map { "Item: $it" }.toMutableList())
+    private val REGISTRATIONS_FILENAME = "registrations.json"
+    private val simpleAdapter = SimpleRegistrationAdapter(mutableListOf())
     private val ZXING_CAMERA_PERMISSION = 1
     private val UNIT_READER_REQUEST = 1
+    private val registrationService = Retrofit.Builder().baseUrl("http://10.0.96.118:8080/api/").addConverterFactory(GsonConverterFactory.create()).build().create(BosCallWebAPIService::class.java)
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,7 +60,17 @@ class UnitsFragment : Fragment() {
         initialize()
     }
 
-    fun initialize() {
+    private fun initialize() {
+        // Load units
+        val registrations = readRegistrationsFromFile()
+        Log.d(javaClass.name, "List: ${registrations.size}")
+
+        for (registration in registrations) {
+            simpleAdapter.addItem(registration)
+
+        }
+        simpleAdapter.notifyDataSetChanged()
+
         // Setup recycler view
         recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -56,13 +82,11 @@ class UnitsFragment : Fragment() {
                         .setTitle(R.string.dlg_confirmDelete_title)
                         .setMessage(R.string.dlg_confirmDelete_message)
                         .setIcon(R.drawable.ic_dialog_alert_black_24dp)
-                        .setPositiveButton(R.string.dlg_confirmDelete_btnYes, DialogInterface.OnClickListener { dialog, which ->
+                        .setPositiveButton(R.string.dlg_confirmDelete_btnYes, { dialog, which ->
                             // Delete unit
-                            val adapter = recyclerView.adapter as SimpleAdapter
-                            adapter.removeAt(viewHolder.adapterPosition)
-                            // TODO: Call API to remove person, remove from unit list
+                            removeRegistration(viewHolder.adapterPosition)
                         })
-                        .setNegativeButton(R.string.dlg_confirmDelete_btnNo, DialogInterface.OnClickListener { dialog, which ->
+                        .setNegativeButton(R.string.dlg_confirmDelete_btnNo, { dialog, which ->
                             // Workaround to remove the swipe-effect
                             simpleAdapter.notifyDataSetChanged()
                         })
@@ -72,6 +96,12 @@ class UnitsFragment : Fragment() {
 
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        // Load units
+        /*val unitStorage = File(context.filesDir, "units.json")
+        val ois = ObjectInputStream(FileInputStream(unitStorage))
+        var units: List<UnitDTO> = ois.readObject() as List<UnitDTO>*/
+
 
         // Setup add-click handler
         btnAddUnit.setOnClickListener {
@@ -89,12 +119,10 @@ class UnitsFragment : Fragment() {
         when (requestCode) {
             ZXING_CAMERA_PERMISSION -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (this::class != null) {
-                        val intent = Intent(activity, UnitReaderActivity::class.java)
-                        startActivity(intent)
-                    }
+                    val intent = Intent(activity, UnitReaderActivity::class.java)
+                    startActivity(intent)
                 } else {
-                    Toast.makeText(activity, "Please grant camera permission to use the QR Scanner", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, getString(R.string.unitReader_toast_permissionRequest_failed), Toast.LENGTH_SHORT).show()
                 }
                 return
             }
@@ -106,9 +134,93 @@ class UnitsFragment : Fragment() {
         if (requestCode == UNIT_READER_REQUEST) {
             // Make sure the request was successful
             if (resultCode == Activity.RESULT_OK) {
-                Log.d(javaClass.name, "Unitcode: ${data?.getStringExtra("unit")}")
+                val registrationData = JSONObject(data?.getStringExtra("unit"))
+                Log.d(javaClass.name, "= Registration data =: ${registrationData}")
+                val request = RegistrationRequest(registrationData.getLong("id"), registrationData.getString("secret"), FirebaseInstanceId.getInstance().token
+                        ?: "")
+                val call = registrationService.registerUnit(request)
+                call.enqueue(object : Callback<Registration> {
+                    override fun onFailure(call: Call<Registration>?, t: Throwable?) {
+                        Log.d(javaClass.name, "Service call failed")
+                        Toast.makeText(activity, getString(R.string.unitReader_toast_serviceCall_failed), Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onResponse(call: Call<Registration>?, response: Response<Registration>) {
+                        if (response.code() == 201 && response.body() != null) {
+                            val registration = response.body() as Registration
+                            registration.secret = request.secret
+                            registration.unitId = request.unitId
+                            addRegistration(registration)
+                        } else {
+                            Toast.makeText(activity, getString(R.string.unitReader_toast_registration_failed), Toast.LENGTH_LONG).show()
+                        }
+
+                    }
+                })
+
+
             }
         }
+    }
+
+    private fun readRegistrationsFromFile(): MutableList<Registration> {
+        val registrationType = object : TypeToken<MutableList<Registration>>() {}.type
+        val gson = GsonBuilder().create()
+        val unitStorage = File(context.filesDir, REGISTRATIONS_FILENAME)
+        var units = mutableListOf<Registration>()
+        if (unitStorage.exists()) {
+            val reader = Scanner(unitStorage)
+            if (reader.hasNextLine()) {
+                val obj = reader.nextLine()
+                reader.close()
+                if (obj != null) {
+                    units = gson.fromJson(obj, registrationType)
+                }
+            }
+
+        } else {
+            unitStorage.createNewFile()
+        }
+        return units
+    }
+
+    private fun addRegistration(registration: Registration) {
+        simpleAdapter.addItem(registration)
+        storeRegistrations(simpleAdapter.getList())
+    }
+
+    private fun storeRegistrations(registrations: MutableList<Registration>) {
+        val registrationStorage = File(context.filesDir, REGISTRATIONS_FILENAME)
+        val gson = GsonBuilder().create()
+        val registrationType = object : TypeToken<MutableList<Registration>>() {}.type
+        val registrationJson = gson.toJson(registrations, registrationType)
+        if (!registrationStorage.exists()) {
+            registrationStorage.createNewFile()
+        }
+        val writer = PrintWriter(registrationStorage)
+        writer.print(registrationJson)
+        writer.flush()
+    }
+
+    private fun removeRegistration(position: Int) {
+        val registrationDeleted = simpleAdapter[position]
+
+        val unregistrationRequest = UnregistrationRequest(registrationDeleted.unitId, registrationDeleted.apiKey, registrationDeleted.userId)
+        registrationService.unregisterUnit(unregistrationRequest).enqueue(object : Callback<Registration> {
+            override fun onFailure(call: Call<Registration>?, t: Throwable?) {
+                Log.d(javaClass.name, "Service call failed")
+                Toast.makeText(activity, getString(R.string.unitReader_toast_serviceCall_failed), Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<Registration>?, response: Response<Registration>) {
+                if (response.code() == 200 || response.code() == 204) {
+                    simpleAdapter.removeAt(position)
+                    storeRegistrations(simpleAdapter.getList())
+                } else {
+                    Toast.makeText(activity, getString(R.string.unitReader_toast_unregistration_failed), Toast.LENGTH_LONG).show()
+                }
+            }
+        })
     }
 
 }// Required empty public constructor
