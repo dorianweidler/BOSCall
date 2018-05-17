@@ -89,7 +89,7 @@ class UnitsFragment : Fragment() {
                         .setNegativeButton(R.string.dlg_confirmDelete_btnNo, { dialog, which ->
                             // Workaround to remove the swipe-effect
                             simpleAdapter.notifyDataSetChanged()
-                        })
+                        }).setCancelable(false)
                         .show()
             }
         }
