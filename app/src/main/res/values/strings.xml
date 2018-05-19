@@ -39,4 +39,7 @@
 
     <!-- row_item -->
     <string name="unitItem_placeholder" translatable="false">Unit placeholder</string>
+
+    <!-- Splash screen -->
+    <string name="splash_Loading">Loading...</string>
 </resources>

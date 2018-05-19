@@ -22,13 +22,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import de.boscall.constants.ServiceConfiguration
 import de.boscall.dto.Registration
 import de.boscall.dto.RegistrationRequest
 import de.boscall.dto.UnregistrationRequest
 import de.boscall.services.BosCallWebAPIService
+import de.boscall.util.RegistrationStorage
 import kotlinx.android.synthetic.main.fragment_units.*
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -37,16 +36,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
-import java.io.PrintWriter
-import java.util.*
 
 
 /**
  * A simple [Fragment] subclass.
  */
 class UnitsFragment : Fragment() {
-    private val REGISTRATIONS_FILENAME = "registrations.json"
+
     private val simpleAdapter = SimpleRegistrationAdapter(mutableListOf())
     private val ZXING_CAMERA_PERMISSION = 1
     private val UNIT_READER_REQUEST = 1
@@ -65,7 +61,7 @@ class UnitsFragment : Fragment() {
 
     private fun initialize() {
         // Load units
-        val registrations = readRegistrationsFromFile()
+        val registrations = RegistrationStorage.readRegistrationsFromFile(activity)
         Log.d(javaClass.name, "List: ${registrations.size}")
 
         for (registration in registrations) {
@@ -180,34 +176,10 @@ class UnitsFragment : Fragment() {
                         } else {
                             Toast.makeText(activity, getString(R.string.unitReader_toast_registration_failed), Toast.LENGTH_LONG).show()
                         }
-
                     }
                 })
-
-
             }
         }
-    }
-
-    private fun readRegistrationsFromFile(): MutableList<Registration> {
-        val registrationType = object : TypeToken<MutableList<Registration>>() {}.type
-        val gson = GsonBuilder().create()
-        val unitStorage = File(context.filesDir, REGISTRATIONS_FILENAME)
-        var units = mutableListOf<Registration>()
-        if (unitStorage.exists()) {
-            val reader = Scanner(unitStorage)
-            if (reader.hasNextLine()) {
-                val obj = reader.nextLine()
-                reader.close()
-                if (obj != null) {
-                    units = gson.fromJson(obj, registrationType)
-                }
-            }
-
-        } else {
-            unitStorage.createNewFile()
-        }
-        return units
     }
 
     private fun addRegistration(registration: Registration) {
@@ -217,20 +189,7 @@ class UnitsFragment : Fragment() {
         editor.putLong("userId", registration.userId)
         editor.putString("apiKey", registration.apiKey)
         editor.apply()
-        storeRegistrations(simpleAdapter.getList())
-    }
-
-    private fun storeRegistrations(registrations: MutableList<Registration>) {
-        val registrationStorage = File(context.filesDir, REGISTRATIONS_FILENAME)
-        val gson = GsonBuilder().create()
-        val registrationType = object : TypeToken<MutableList<Registration>>() {}.type
-        val registrationJson = gson.toJson(registrations, registrationType)
-        if (!registrationStorage.exists()) {
-            registrationStorage.createNewFile()
-        }
-        val writer = PrintWriter(registrationStorage)
-        writer.print(registrationJson)
-        writer.flush()
+        RegistrationStorage.storeRegistrations(activity, simpleAdapter.getList())
     }
 
     private fun removeRegistration(position: Int) {
@@ -247,7 +206,7 @@ class UnitsFragment : Fragment() {
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
                 if (response.code() == 200 || response.code() == 204 || response.code() == 403) {
                     simpleAdapter.removeAt(position)
-                    storeRegistrations(simpleAdapter.getList())
+                    RegistrationStorage.storeRegistrations(activity, simpleAdapter.getList())
                 } else {
                     Toast.makeText(activity, getString(R.string.unitReader_toast_unregistration_failed), Toast.LENGTH_LONG).show()
                     simpleAdapter.notifyDataSetChanged()

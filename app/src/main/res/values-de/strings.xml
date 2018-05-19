@@ -27,4 +27,5 @@
     <string name="dlg_userNameUnset_message">Sie haben Ihren Namen in den Einstellungen noch nicht festgelegt.</string>
     <string name="dlg_userNameUnset_btnSetNow">Jetzt setzen</string>
     <string name="unitReader_toast_reading_failed">Lesen des QR-Codes fehlgeschlagen!</string>
+    <string name="splash_Loading">Laden...</string>
 </resources>
