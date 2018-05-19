@@ -5,6 +5,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService
+import de.boscall.R
 import de.boscall.constants.ServiceConfiguration
 import de.boscall.dto.TokenUpdateRequest
 import okhttp3.ResponseBody
@@ -38,7 +39,8 @@ class BosCallIdService : FirebaseInstanceIdService() {
         val apiKey = sharedPref.getString("apiKey", null)
 
         if (userId >= 0 && apiKey != null) {
-            val updateTokenRequest = TokenUpdateRequest(userId, token, apiKey)
+            val userName = sharedPref.getString("itmUserName", getString(R.string.itmDefault_userName))
+            val updateTokenRequest = TokenUpdateRequest(userId, token, apiKey, userName)
             SERVICE.updateToken(updateTokenRequest).enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
                     Log.d(javaClass.name, "Updating token failed")

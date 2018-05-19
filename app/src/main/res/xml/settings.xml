@@ -3,6 +3,15 @@
 
 
     <PreferenceCategory android:title="@string/grp_settings_general">
+        <EditTextPreference
+            android:defaultValue="@string/itmDefault_userName"
+            android:dialogIcon="@drawable/ic_person_black_24dp"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:key="itmUserName"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/itmDesc_userName"
+            android:title="@string/itm_userName" />
         <RingtonePreference
             android:icon="@drawable/ic_music_note_black_24dp"
             android:key="itmDefaultAlarmtone"

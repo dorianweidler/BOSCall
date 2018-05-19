@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(this.javaClass.name, "FCM Registration Token: " + token)
     }
 
-    fun switchFragment(navId: Int): Boolean {
+    private fun switchFragment(navId: Int): Boolean {
         val fragment: Fragment?
 
         when (navId) {
@@ -53,6 +53,10 @@ class MainActivity : AppCompatActivity() {
                 .commit()
 
         return true
+    }
+
+    fun setContentByNavId(navId: Int) {
+        navigation.selectedItemId = navId
     }
 
     enum class FragmentID {

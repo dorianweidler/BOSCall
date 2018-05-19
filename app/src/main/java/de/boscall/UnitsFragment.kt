@@ -102,12 +102,29 @@ class UnitsFragment : Fragment() {
 
         // Setup add-click handler
         btnAddUnit.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity,
-                        arrayOf(Manifest.permission.CAMERA), ZXING_CAMERA_PERMISSION)
+            // check if username is set!
+            val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+            val userName = sharedPref.getString("itmUserName", null)
+            if (userName != null && !(userName == getString(R.string.itmDefault_userName))) {
+                // do registration
+                if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity,
+                            arrayOf(Manifest.permission.CAMERA), ZXING_CAMERA_PERMISSION)
+                } else {
+                    val intent = Intent(activity, UnitReaderActivity::class.java)
+                    startActivityForResult(intent, UNIT_READER_REQUEST)
+                }
             } else {
-                val intent = Intent(activity, UnitReaderActivity::class.java)
-                startActivityForResult(intent, UNIT_READER_REQUEST)
+                AlertDialog.Builder(activity)
+                        .setTitle(R.string.dlg_userNameUnset_title)
+                        .setMessage(R.string.dlg_userNameUnset_message)
+                        .setIcon(R.drawable.ic_settings_black_24dp)
+                        .setPositiveButton(R.string.dlg_userNameUnset_btnSetNow, { dialog, which ->
+                            // Delete unit
+                            (activity as MainActivity).setContentByNavId(R.id.nav_settings)
+                        })
+                        .setCancelable(false)
+                        .show()
             }
         }
     }
@@ -131,10 +148,22 @@ class UnitsFragment : Fragment() {
         if (requestCode == UNIT_READER_REQUEST) {
             // Make sure the request was successful
             if (resultCode == Activity.RESULT_OK) {
-                val registrationData = JSONObject(data?.getStringExtra("unit"))
-                Log.d(javaClass.name, "= Registration data =: ${registrationData}")
-                val request = RegistrationRequest(registrationData.getLong("id"), registrationData.getString("secret"), FirebaseInstanceId.getInstance().token
-                        ?: "")
+                var registrationData: JSONObject
+                var id: Long
+                var secret: String
+
+                try {
+                    registrationData = JSONObject(data?.getStringExtra("unit"))
+                    id = registrationData.getLong("id")
+                    secret = registrationData.getString("secret")
+                } catch (e: Exception) {
+                    Toast.makeText(activity, getString(R.string.unitReader_toast_reading_failed), Toast.LENGTH_LONG)
+                    return
+                }
+                val preferences = PreferenceManager.getDefaultSharedPreferences(activity)
+                val userName = preferences.getString("itmUserName", getString(R.string.itmDefault_userName))
+                val request = RegistrationRequest(id, secret, FirebaseInstanceId.getInstance().token
+                        ?: "", userName)
                 val call = SERVICE.registerUnit(request)
                 call.enqueue(object : Callback<Registration> {
                     override fun onFailure(call: Call<Registration>?, t: Throwable?) {
@@ -212,14 +241,16 @@ class UnitsFragment : Fragment() {
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
                 Log.d(javaClass.name, "Service call failed")
                 Toast.makeText(activity, getString(R.string.unitReader_toast_serviceCall_failed), Toast.LENGTH_LONG).show()
+                simpleAdapter.notifyDataSetChanged()
             }
 
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
-                if (response.code() == 200 || response.code() == 204) {
+                if (response.code() == 200 || response.code() == 204 || response.code() == 403) {
                     simpleAdapter.removeAt(position)
                     storeRegistrations(simpleAdapter.getList())
                 } else {
                     Toast.makeText(activity, getString(R.string.unitReader_toast_unregistration_failed), Toast.LENGTH_LONG).show()
+                    simpleAdapter.notifyDataSetChanged()
                 }
             }
         })

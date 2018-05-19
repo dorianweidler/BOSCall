@@ -20,5 +20,11 @@
     <string name="unitReader_toast_registration_failed">Registration fehlgeschlagen, Lizenznehmer kontaktieren!</string>
     <string name="unitReader_toast_unregistration_failed">Abmeldung fehlgeschlagen, Lizenznehmer kontaktieren!</string>
     <string name="unitReader_toast_permissionRequest_failed">Bitte erlauben Sie Kamerazugriff, ohne diesen ist das QR-Code scannen nicht möglich.</string>
-    <string name="unitItem_placeholder" translatable="false">Einheiten Platzhalter</string>
+    <string name="itm_userName">Ihr Name</string>
+    <string name="itmDesc_userName">Ihr Name um Sie zu identifizieren.</string>
+    <string name="itmDefault_userName">Vorname Nachname</string>
+    <string name="dlg_userNameUnset_title">Name nicht gesetzt</string>
+    <string name="dlg_userNameUnset_message">Sie haben Ihren Namen in den Einstellungen noch nicht festgelegt.</string>
+    <string name="dlg_userNameUnset_btnSetNow">Jetzt setzen</string>
+    <string name="unitReader_toast_reading_failed">Lesen des QR-Codes fehlgeschlagen!</string>
 </resources>
