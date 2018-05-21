@@ -1,5 +1,6 @@
 package de.boscall
 
+import android.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -38,6 +39,18 @@ class AlarmAdapter(private val items: MutableList<Alarm>) : RecyclerView.Adapter
         fun bind(alarm: Alarm) = with(itemView) {
             tvTitle.text = alarm.title
             tvContent.text = alarm.text
+
+            itemView.setOnClickListener {
+                AlertDialog.Builder(context)
+                        .setTitle(alarm.title)
+                        .setMessage(alarm.text)
+                        .setIcon(R.drawable.ic_dialog_alert_black_24dp)
+                        .setPositiveButton(R.string.dlg_OK_btnOk, { dialog, which ->
+                            //Nothing to do
+                        })
+                        .setCancelable(false)
+                        .show()
+            }
         }
     }
 }

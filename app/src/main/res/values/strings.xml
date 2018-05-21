@@ -19,6 +19,7 @@
     <string name="dlg_confirmDelete_message">Are you sure to delete the unit? There\'s no way back!</string>
     <string name="dlg_confirmDelete_btnYes">Yes</string>
     <string name="dlg_confirmDelete_btnNo">No</string>
+    <string name="dlg_OK_btnOk">O.K.</string>
 
     <string name="dlg_userNameUnset_title">Name unset</string>
     <string name="dlg_userNameUnset_message">You did not specify your name in settings.</string>

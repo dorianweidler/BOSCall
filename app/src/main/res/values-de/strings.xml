@@ -13,6 +13,7 @@
     <string name="dlg_confirmDelete_message">Sind Sie sich sicher? Diese Aktion ist nicht umkehrbar!</string>
     <string name="dlg_confirmDelete_btnYes">Ja</string>
     <string name="dlg_confirmDelete_btnNo">Nein</string>
+    <string name="dlg_OK_btnOk">O.K.</string>
     <string name="not_channel_alarm_name">Alarm Kanal</string>
     <string name="not_channel_alarm_desc">Kanal für Alarmierungen</string>
     <string name="unitReader_toast_unit_found">Einheit gefunden, registrieren...</string>

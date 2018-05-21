@@ -46,7 +46,7 @@ class AlarmlistFragment : Fragment() {
         }
         alarmAdapter.notifyDataSetChanged()
 
-        var testAlarm1 : Alarm = Alarm("TEST1" , "Das ist der Text von 1.")
+        var testAlarm1 : Alarm = Alarm("TEST1" , "Das ist der Text von 1.fdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssvvvvvvvvvvvvvvvvvvvvv")
         var testAlarm2 : Alarm = Alarm("TEST2" , "Das ist der Text von 2.")
         var testAlarm3 : Alarm = Alarm("TEST3" , "Das ist der Text von 3.")
         var testAlarm4 : Alarm = Alarm("TEST4" , "Das ist der Text von 4.")
