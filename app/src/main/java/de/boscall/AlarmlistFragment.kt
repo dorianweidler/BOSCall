@@ -1,15 +1,22 @@
 package de.boscall
 
 
+import android.app.AlertDialog
 import android.app.Fragment
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListView
-import android.widget.TextView
+import de.boscall.dto.Alarm
+import de.boscall.util.AlarmStorage
+import kotlinx.android.synthetic.main.fragment_alarmlist.*
 
 /**
  * A simple [Fragment] subclass.
@@ -17,80 +24,82 @@ import android.widget.TextView
 class AlarmlistFragment : Fragment() {
 
     private var listNotes = ArrayList<ListNode>()
-
+    private val alarmAdapter = AlarmAdapter(mutableListOf())
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view = inflater!!.inflate(R.layout.fragment_alarmlist, container, false)
 
-        fillAlarmList(view)
-
         return view
     }
 
-    fun fillAlarmList(view: View?) {
-        listNotes.add(ListNode(1, "JavaSampleApproach", "Java technology, Spring Framework - approach to Java by Sample."))
-        listNotes.add(ListNode(2, "Kotlin Android Tutorial", "Create tutorial for people to learn Kotlin Android. Kotlin is now an official language on Android. It's expressive, concise, and powerful. Best of all, it's interoperable with our existing Android languages and runtime."))
-        listNotes.add(ListNode(3, "Android Studio", "Android Studio 3.0 provides helpful tools to help you start using Kotlin. Convert entire Java files or convert code snippets on the fly when you paste Java code into a Kotlin file."))
-        listNotes.add(ListNode(4, "Java Android Tutorial", "Create tutorial for people to learn Java Android. Learn Java in a greatly improved learning environment with more lessons, real practice opportunity, and community support."))
-        listNotes.add(ListNode(5, "Spring Boot Tutorial", "Spring Boot help build stand-alone, production Spring Applications easily, less configuration then rapidly start new projects."))
-        listNotes.add(ListNode(6, "JavaSampleApproach", "Java technology, Spring Framework - approach to Java by Sample."))
-        listNotes.add(ListNode(7, "Kotlin Android Tutorial", "Create tutorial for people to learn Kotlin Android. Kotlin is now an official language on Android. It's expressive, concise, and powerful. Best of all, it's interoperable with our existing Android languages and runtime."))
-        listNotes.add(ListNode(8, "Android Studio", "Android Studio 3.0 provides helpful tools to help you start using Kotlin. Convert entire Java files or convert code snippets on the fly when you paste Java code into a Kotlin file."))
-        listNotes.add(ListNode(9, "Java Android Tutorial", "Create tutorial for people to learn Java Android. Learn Java in a greatly improved learning environment with more lessons, real practice opportunity, and community support."))
-        listNotes.add(ListNode(10, "Spring Boot Tutorial", "Spring Boot help build stand-alone, production Spring Applications easily, less configuration then rapidly start new projects."))
+    fun initialize() {
 
-        var notesAdapter = NotesAdapter(listNotes)
-        var liste = view?.findViewById<ListView>(R.id.alarmList) as ListView
-        liste.adapter = notesAdapter
-    }
+        // Load units
+        val alarms = AlarmStorage.readAlarmsFromFile(activity)
+        Log.d(javaClass.name, "List: ${alarms.size}")
 
-    inner class NotesAdapter(private var notesList: ArrayList<ListNode>) : BaseAdapter() {
+        for (registration in alarms) {
+            alarmAdapter.addItem(registration)
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+        }
+        alarmAdapter.notifyDataSetChanged()
 
-            val view: View?
-            val vh: ViewHolder
+        var testAlarm1 : Alarm = Alarm("TEST1" , "Das ist der Text von 1.")
+        var testAlarm2 : Alarm = Alarm("TEST2" , "Das ist der Text von 2.")
+        var testAlarm3 : Alarm = Alarm("TEST3" , "Das ist der Text von 3.")
+        var testAlarm4 : Alarm = Alarm("TEST4" , "Das ist der Text von 4.")
 
-            if (convertView == null) {
-                val inflater: LayoutInflater = LayoutInflater.from(context)
-                view = inflater.inflate(R.layout.list_node, parent, false)
-                vh = ViewHolder(view)
-                view.tag = vh
-                Log.i("JSA", "set Tag for ViewHolder, position: " + position)
-            } else {
-                view = convertView
-                vh = view.tag as ViewHolder
+        alarmAdapter.addItem(testAlarm1)
+        alarmAdapter.addItem(testAlarm2)
+        alarmAdapter.addItem(testAlarm3)
+        alarmAdapter.addItem(testAlarm4)
+
+        alarmList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        alarmList.layoutManager = LinearLayoutManager(activity)
+        alarmList.adapter = alarmAdapter
+
+        val swipeHandler = object : SwipeToDeleteCallback(activity) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                AlertDialog.Builder(activity)
+                        .setTitle(R.string.dlg_confirmDelete_title)
+                        .setMessage(R.string.dlg_confirmDelete_message)
+                        .setIcon(R.drawable.ic_dialog_alert_black_24dp)
+                        .setPositiveButton(R.string.dlg_confirmDelete_btnYes, { dialog, which ->
+                            // Delete unit
+                            removeAlarm(viewHolder.adapterPosition)
+                        })
+                        .setNegativeButton(R.string.dlg_confirmDelete_btnNo, { dialog, which ->
+                            // Workaround to remove the swipe-effect
+                            alarmAdapter.notifyDataSetChanged()
+                        }).setCancelable(false)
+                        .show()
             }
-
-            vh.tvTitle.text = notesList[position].title
-            vh.tvContent.text = notesList[position].content
-
-            return view
         }
 
-        override fun getItem(position: Int): Any {
-            return notesList[position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
-
-        override fun getCount(): Int {
-            return notesList.size
-        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(alarmList)
     }
 
-    private class ViewHolder(view: View?) {
-        val tvTitle: TextView
-        val tvContent: TextView
-
-        init {
-            this.tvTitle = view?.findViewById<TextView>(R.id.tvTitle) as TextView
-            this.tvContent = view.findViewById<TextView>(R.id.tvContent) as TextView
-        }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initialize()
     }
 
+    private fun removeAlarm(position: Int) {
+        val title : String = alarmAdapter.get(position).title
+        alarmAdapter.removeAt(position)
+        Log.d("REMOVE", "Item $title has been removed.")
+    }
+
+    private fun addAlarm(alarm: Alarm) {
+        alarmAdapter.addItem(alarm)
+        val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        val editor = sharedPref.edit()
+        editor.putString("title", alarm.title)
+        editor.putString("content", alarm.text)
+        editor.apply()
+        AlarmStorage.storeAlarms(activity, alarmAdapter.getList())
+    }
 }
