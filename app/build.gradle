@@ -27,6 +27,7 @@ android {
 
 dependencies {
     def room_version = "1.1.0"
+    def lifecycle_version = "2.0.0-alpha1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -45,6 +46,18 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     kapt "android.arch.persistence.room:compiler:$room_version"
+
+    // viewmodel
+    /*implementation 'androidx.core:core-ktx:1.0.0-alpha1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"*/
+    def androidArchVersion = '1.1.1'
+    implementation "android.arch.lifecycle:viewmodel:$androidArchVersion"
+    implementation "android.arch.lifecycle:livedata:$androidArchVersion"
+    kapt "android.arch.lifecycle:compiler:$androidArchVersion"
+    testImplementation "android.arch.core:core-testing:$androidArchVersion"
+    implementation "android.arch.lifecycle:extensions:$androidArchVersion"
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

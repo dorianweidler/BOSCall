@@ -11,6 +11,7 @@ import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import de.boscall.R
+import de.boscall.dto.Alarm
 
 
 class BosCallMessagingService : FirebaseMessagingService() {
@@ -26,8 +27,15 @@ class BosCallMessagingService : FirebaseMessagingService() {
 
         // Check if message contains a data payload.
         if (remoteMessage.data.size > 0) {
+            Log.d(TAG, "Keys: ${remoteMessage.data.keys}")
+            /*val gson = GsonBuilder().create()
+            val alarmType = object : TypeToken<MutableList<Alarm>>() {}.type
+            val result = gson.fromJson<Alarm>(remoteMessage.data.toString(), alarmType)
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
-
+            Log.d(TAG, "Added item:")
+            Log.d(TAG, "Added item: ${result}")*/
+            AlarmDatabase.getInstance(applicationContext).alarmDao().insert(Alarm(remoteMessage.data.get("title")
+                    ?: "Kein Alarmtitel", remoteMessage.data.get("text") ?: "Kein Alarmtext"))
             // process
             // TODO Process
 

@@ -3,18 +3,19 @@ package de.boscall
 
 import android.app.AlertDialog
 import android.app.Fragment
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import de.boscall.dbTasks.AddAlarmsToAdapterTask
 import de.boscall.dbTasks.RemoveAlarmTask
 import de.boscall.dto.Alarm
 import de.boscall.util.AlarmStorage
@@ -37,18 +38,13 @@ class AlarmlistFragment : Fragment() {
     }
 
     fun initialize() {
-
-        // Load units
-        val alarms = AlarmStorage.readAlarmsFromFile(activity)
-        Log.d(javaClass.name, "List: ${alarms.size}")
-
-        for (registration in alarms) {
-            alarmAdapter.addItem(registration)
-
-        }
-        alarmAdapter.notifyDataSetChanged()
-
-        AddAlarmsToAdapterTask(alarmAdapter, activity).execute()
+        val viewModel = ViewModelProviders.of(activity as FragmentActivity).get(AlarmsViewModel::class.java)
+        viewModel.getAlarms().observe(activity as FragmentActivity, object : Observer<MutableList<Alarm>> {
+            override fun onChanged(t: MutableList<Alarm>?) {
+                alarmAdapter.setAlarms(t!!)
+            }
+        })
+        //AddAlarmsToAdapterTask(alarmAdapter, activity).execute()
 
         alarmList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         alarmList.layoutManager = LinearLayoutManager(activity)

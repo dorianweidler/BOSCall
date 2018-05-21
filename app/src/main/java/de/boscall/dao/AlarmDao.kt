@@ -1,5 +1,6 @@
 package de.boscall.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
@@ -11,7 +12,7 @@ import de.boscall.dto.Alarm
 interface AlarmDao {
 
     @Query("SELECT * FROM alarm")
-    fun getAll(): List<Alarm>
+    fun getAll(): LiveData<MutableList<Alarm>>
 
     @Insert(onConflict = REPLACE)
     fun insert(alarm: Alarm)

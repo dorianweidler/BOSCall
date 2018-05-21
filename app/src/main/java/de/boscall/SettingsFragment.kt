@@ -1,7 +1,6 @@
 package de.boscall
 
 
-import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceFragment
@@ -18,10 +17,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class SettingsFragment : PreferenceFragment() {
     private val SERVICE = Retrofit.Builder().baseUrl(ServiceConfiguration.API_ADDRESS).addConverterFactory(GsonConverterFactory.create()).build().create(BosCallWebAPIService::class.java)
 

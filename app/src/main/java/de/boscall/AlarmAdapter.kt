@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import de.boscall.dto.Alarm
 import kotlinx.android.synthetic.main.list_node.view.*
 
-class AlarmAdapter(private val items: MutableList<Alarm>) : RecyclerView.Adapter<AlarmAdapter.VH>() {
+class AlarmAdapter(private var items: MutableList<Alarm>) : RecyclerView.Adapter<AlarmAdapter.VH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         return VH(parent)
@@ -22,6 +22,11 @@ class AlarmAdapter(private val items: MutableList<Alarm>) : RecyclerView.Adapter
     fun addItem(alarm: Alarm) {
         items.add(alarm)
         notifyItemInserted(items.size)
+    }
+
+    fun setAlarms(alarms: MutableList<Alarm>) {
+        this.items = alarms
+        notifyDataSetChanged()
     }
 
     fun removeAt(position: Int) {

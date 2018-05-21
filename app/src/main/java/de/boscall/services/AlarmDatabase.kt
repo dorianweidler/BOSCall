@@ -15,7 +15,7 @@ abstract class AlarmDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: AlarmDatabase? = null
 
-        fun getInstance(context: Context): AlarmDatabase? {
+        fun getInstance(context: Context): AlarmDatabase {
             if (INSTANCE == null) {
                 synchronized(AlarmDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
@@ -23,7 +23,7 @@ abstract class AlarmDatabase : RoomDatabase() {
                             .build()
                 }
             }
-            return INSTANCE
+            return INSTANCE!!
         }
 
         fun destroyInstance() {
