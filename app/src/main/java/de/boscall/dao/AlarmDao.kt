@@ -11,7 +11,7 @@ import de.boscall.dto.Alarm
 @Dao
 interface AlarmDao {
 
-    @Query("SELECT * FROM alarm")
+    @Query("SELECT * FROM alarm ORDER by aid DESC")
     fun getAll(): LiveData<MutableList<Alarm>>
 
     @Insert(onConflict = REPLACE)
