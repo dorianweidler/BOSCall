@@ -14,6 +14,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import de.boscall.dbTasks.AddAlarmsToAdapterTask
+import de.boscall.dbTasks.RemoveAlarmTask
 import de.boscall.dto.Alarm
 import de.boscall.util.AlarmStorage
 import kotlinx.android.synthetic.main.fragment_alarmlist.*
@@ -46,15 +48,17 @@ class AlarmlistFragment : Fragment() {
         }
         alarmAdapter.notifyDataSetChanged()
 
-        var testAlarm1 : Alarm = Alarm("TEST1" , "Das ist der Text von 1.fdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssvvvvvvvvvvvvvvvvvvvvv")
-        var testAlarm2 : Alarm = Alarm("TEST2" , "Das ist der Text von 2.")
-        var testAlarm3 : Alarm = Alarm("TEST3" , "Das ist der Text von 3.")
-        var testAlarm4 : Alarm = Alarm("TEST4" , "Das ist der Text von 4.")
+        /*var testAlarm1 : Alarm = Alarm(1, "TEST1" , "Das ist der Text von 1.fdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssvvvvvvvvvvvvvvvvvvvvv")
+        var testAlarm2 : Alarm = Alarm(2, "TEST2" , "Das ist der Text von 2.")
+        var testAlarm3 : Alarm = Alarm(3,"TEST3" , "Das ist der Text von 3.")
+        var testAlarm4 : Alarm = Alarm(4,"TEST4" , "Das ist der Text von 4.")*/
 
-        alarmAdapter.addItem(testAlarm1)
+        /*alarmAdapter.addItem(testAlarm1)
         alarmAdapter.addItem(testAlarm2)
         alarmAdapter.addItem(testAlarm3)
-        alarmAdapter.addItem(testAlarm4)
+        alarmAdapter.addItem(testAlarm4)*/
+
+        AddAlarmsToAdapterTask(alarmAdapter, activity).execute()
 
         alarmList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         alarmList.layoutManager = LinearLayoutManager(activity)
@@ -67,7 +71,7 @@ class AlarmlistFragment : Fragment() {
                         .setMessage(R.string.dlg_confirmDelete_message)
                         .setIcon(R.drawable.ic_dialog_alert_black_24dp)
                         .setPositiveButton(R.string.dlg_confirmDelete_btnYes, { dialog, which ->
-                            // Delete unit
+                            // Delete alarm
                             removeAlarm(viewHolder.adapterPosition)
                         })
                         .setNegativeButton(R.string.dlg_confirmDelete_btnNo, { dialog, which ->
@@ -88,9 +92,9 @@ class AlarmlistFragment : Fragment() {
     }
 
     private fun removeAlarm(position: Int) {
-        val title : String = alarmAdapter.get(position).title
+        val alarmRemoved = alarmAdapter[position]
         alarmAdapter.removeAt(position)
-        Log.d("REMOVE", "Item $title has been removed.")
+        RemoveAlarmTask(activity).execute(alarmRemoved)
     }
 
     private fun addAlarm(alarm: Alarm) {

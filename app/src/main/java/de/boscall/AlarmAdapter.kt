@@ -37,6 +37,7 @@ class AlarmAdapter(private val items: MutableList<Alarm>) : RecyclerView.Adapter
             LayoutInflater.from(parent.context).inflate(R.layout.list_node, parent, false)) {
 
         fun bind(alarm: Alarm) = with(itemView) {
+
             tvTitle.text = alarm.title
             tvContent.text = alarm.text
 
