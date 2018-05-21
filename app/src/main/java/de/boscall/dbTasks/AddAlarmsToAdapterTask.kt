@@ -20,10 +20,6 @@ class AddAlarmsToAdapterTask(alarmAdapter: AlarmAdapter, activity: Activity) : A
         val db = AlarmDatabase.getInstance(activity)
         val alarmDao = db?.alarmDao()
 
-        alarmDao?.insert(Alarm("test1", "test123123"))
-
-
-
         return alarmDao?.getAll()!!
     }
 

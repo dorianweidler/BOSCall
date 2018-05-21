@@ -48,16 +48,6 @@ class AlarmlistFragment : Fragment() {
         }
         alarmAdapter.notifyDataSetChanged()
 
-        /*var testAlarm1 : Alarm = Alarm(1, "TEST1" , "Das ist der Text von 1.fdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssvvvvvvvvvvvvvvvvvvvvv")
-        var testAlarm2 : Alarm = Alarm(2, "TEST2" , "Das ist der Text von 2.")
-        var testAlarm3 : Alarm = Alarm(3,"TEST3" , "Das ist der Text von 3.")
-        var testAlarm4 : Alarm = Alarm(4,"TEST4" , "Das ist der Text von 4.")*/
-
-        /*alarmAdapter.addItem(testAlarm1)
-        alarmAdapter.addItem(testAlarm2)
-        alarmAdapter.addItem(testAlarm3)
-        alarmAdapter.addItem(testAlarm4)*/
-
         AddAlarmsToAdapterTask(alarmAdapter, activity).execute()
 
         alarmList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
