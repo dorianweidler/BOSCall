@@ -1,6 +1,6 @@
 package de.boscall.constants
 
 object ServiceConfiguration {
-    val API_HOST = "192.168.123.6"
-    val API_ADDRESS = "http://${API_HOST}:8080/api/"
+    val API_HOST = "escher.informatik.hs-kl.de"
+    val API_ADDRESS = "http://${API_HOST}:1337/api/"
 }

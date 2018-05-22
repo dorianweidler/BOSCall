@@ -42,6 +42,10 @@ class SplashActivity : AppCompatActivity() {
                     val registrations = RegistrationStorage.readRegistrationsFromFile(this@SplashActivity)
                     val updatedRegistrations = mutableListOf<Registration>()
                     Log.d(javaClass.name, "Response: ${response.body()}")
+                    if (response.body() == null) {
+                        startApp()
+                        return
+                    }
                     for (unitId in response.body()!!) {
                         var found: Registration? = null
                         for (registration in registrations) {
