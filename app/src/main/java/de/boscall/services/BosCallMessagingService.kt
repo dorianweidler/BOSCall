@@ -18,33 +18,10 @@ class BosCallMessagingService : FirebaseMessagingService() {
 
     val TAG = this.javaClass.name
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        // ...
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage!!.from!!)
-
-        // Check if message contains a data payload.
-        if (remoteMessage.data.size > 0) {
-            Log.d(TAG, "Keys: ${remoteMessage.data.keys}")
-            /*val gson = GsonBuilder().create()
-            val alarmType = object : TypeToken<MutableList<Alarm>>() {}.type
-            val result = gson.fromJson<Alarm>(remoteMessage.data.toString(), alarmType)
-            Log.d(TAG, "Message data payload: " + remoteMessage.data)
-            Log.d(TAG, "Added item:")
-            Log.d(TAG, "Added item: ${result}")*/
-            AlarmDatabase.getInstance(applicationContext).alarmDao().insert(Alarm(remoteMessage.data.get("title")
-                    ?: "Kein Alarmtitel", remoteMessage.data.get("text") ?: "Kein Alarmtext"))
-            // process
-            // TODO Process
-
-        }
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.notification != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.notification!!.body!!)
-        }
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        var alarm: Alarm = Alarm(remoteMessage.data.get("title")
+                ?: "Kein Alarmtitel", remoteMessage.data.get("text") ?: "Kein Alarmtext")
+        AlarmDatabase.getInstance(applicationContext).alarmDao().insert(alarm)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val toneString = sharedPreferences.getString("itmDefaultAlarmtone", "content://media/internal/audio/media/323")
         Log.d(TAG, "Tone: ${toneString}")
@@ -54,7 +31,6 @@ class BosCallMessagingService : FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library
-
             val name = getString(R.string.not_channel_alarm_name)
             val description = getString(R.string.not_channel_alarm_desc)
             val channel = NotificationChannel(CHANNEL_ALARM, name, NotificationManager.IMPORTANCE_HIGH)
@@ -66,8 +42,8 @@ class BosCallMessagingService : FirebaseMessagingService() {
 
         val mBuilder = NotificationCompat.Builder(this, CHANNEL_ALARM)
                 .setSmallIcon(R.drawable.ic_phone_android_black_24dp)
-                .setContentTitle(remoteMessage.messageId)
-                .setContentText("Test")
+                .setContentTitle(alarm.title)
+                .setContentText(alarm.text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setSound(Uri.parse(toneString))
         val notification = mBuilder.build()

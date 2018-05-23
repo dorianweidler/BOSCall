@@ -2,6 +2,7 @@ package de.boscall
 
 import android.app.AlertDialog
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import de.boscall.dto.Alarm
@@ -45,6 +46,7 @@ class AlarmAdapter(private var items: MutableList<Alarm>) : RecyclerView.Adapter
 
             tvTitle.text = alarm.title
             tvContent.text = alarm.text
+            Log.d(javaClass.name, "Alarmtext: ${alarm.text} - ${tvContent.text}")
 
             itemView.setOnClickListener {
                 AlertDialog.Builder(context)
