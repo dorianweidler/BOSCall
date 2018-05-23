@@ -5,9 +5,7 @@ import android.app.AlertDialog
 import android.app.Fragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -18,7 +16,6 @@ import android.view.View
 import android.view.ViewGroup
 import de.boscall.dbTasks.RemoveAlarmTask
 import de.boscall.dto.Alarm
-import de.boscall.util.AlarmStorage
 import kotlinx.android.synthetic.main.fragment_alarmlist.*
 
 /**
@@ -26,13 +23,12 @@ import kotlinx.android.synthetic.main.fragment_alarmlist.*
  */
 class AlarmlistFragment : Fragment() {
 
-    private var listNotes = ArrayList<ListNode>()
     private val alarmAdapter = AlarmAdapter(mutableListOf())
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        var view = inflater!!.inflate(R.layout.fragment_alarmlist, container, false)
+        val view = inflater!!.inflate(R.layout.fragment_alarmlist, container, false)
 
         return view
     }
@@ -83,13 +79,4 @@ class AlarmlistFragment : Fragment() {
         RemoveAlarmTask(activity).execute(alarmRemoved)
     }
 
-    private fun addAlarm(alarm: Alarm) {
-        alarmAdapter.addItem(alarm)
-        val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        val editor = sharedPref.edit()
-        editor.putString("title", alarm.title)
-        editor.putString("content", alarm.text)
-        editor.apply()
-        AlarmStorage.storeAlarms(activity, alarmAdapter.getList())
-    }
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BOSCall</string>
     <string name="nav_title_alarmlist">Alarmlist</string>
-    <string name="nav_title_news">News</string>
+    <string name="nav_title_news">Dates</string>
     <string name="nav_title_settings">Settings</string>
     <string name="nav_title_units">Units</string>
 
@@ -43,4 +43,6 @@
 
     <!-- Splash screen -->
     <string name="splash_Loading">Loading...</string>
+
+    <string name="lblTermine">Dates</string>
 </resources>
