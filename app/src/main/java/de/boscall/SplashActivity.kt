@@ -25,6 +25,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        Log.d("Debug Data", "Data: ${intent.extras}")
+
         // check registered units
         val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val userId = sharedPref.getLong("userId", -1)
