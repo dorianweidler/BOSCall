@@ -20,4 +20,7 @@ interface DateDao {
 
     @Delete()
     fun delete(date: Date)
+
+    @Query("DELETE FROM date")
+    fun deleteAll()
 }

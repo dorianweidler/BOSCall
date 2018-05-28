@@ -18,6 +18,7 @@ class UpdateDatesTask(activity: Activity) : AsyncTask<Call<List<JsonObject>>, Da
         if (activity != null) {
             val db = DateDatabase.getInstance(activity)
             for (call in params) {
+                db.dateDao().deleteAll()
                 val response = call.execute()
                 if (response.body() != null) {
                     for (o in response.body()!!) {
