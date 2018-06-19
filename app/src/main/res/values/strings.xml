@@ -5,6 +5,9 @@
     <string name="nav_title_settings">Settings</string>
     <string name="nav_title_units">Units</string>
 
+    <!-- Alarmlist -->
+    <string name="dlg_confirmAllAlarmsDelete_message">Are you sure to delete all alarms? There\'s no way back!</string>
+
     <!-- Settings texts -->
     <string name="grp_settings_general">General</string>
     <string name="itm_default_alarmtone">Default alarmtone</string>
@@ -16,7 +19,7 @@
     <!-- Units texts -->
     <string name="lblUnits">Units</string>
     <string name="dlg_confirmDelete_title">Are you sure?</string>
-    <string name="dlg_confirmDelete_message">Are you sure to delete the unit? There\'s no way back!</string>
+    <string name="dlg_confirmDelete_message">Are you sure? There\'s no way back!</string>
     <string name="dlg_confirmDelete_btnYes">Yes</string>
     <string name="dlg_confirmDelete_btnNo">No</string>
     <string name="dlg_OK_btnOk">O.K.</string>

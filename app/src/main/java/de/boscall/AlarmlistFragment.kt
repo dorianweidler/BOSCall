@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.boscall.dbTasks.RemoveAlarmTask
+import de.boscall.dbTasks.RemoveAllAlarmsTask
 import de.boscall.dto.Alarm
 import kotlinx.android.synthetic.main.fragment_alarmlist.*
 
@@ -66,6 +67,22 @@ class AlarmlistFragment : Fragment() {
 
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(alarmList)
+
+        btnDeleteAll.setOnClickListener {
+            AlertDialog.Builder(activity)
+                    .setTitle(R.string.dlg_confirmDelete_title)
+                    .setMessage(R.string.dlg_confirmAllAlarmsDelete_message)
+                    .setIcon(R.drawable.ic_dialog_alert_black_24dp)
+                    .setPositiveButton(R.string.dlg_confirmDelete_btnYes, { dialog, which ->
+                        // Delete alarm
+                        RemoveAllAlarmsTask(activity).execute()
+                    })
+                    .setNegativeButton(R.string.dlg_confirmDelete_btnNo, { dialog, which ->
+                        // Workaround to remove the swipe-effect
+                        alarmAdapter.notifyDataSetChanged()
+                    }).setCancelable(false)
+                    .show()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

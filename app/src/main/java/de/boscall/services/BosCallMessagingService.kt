@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import de.boscall.R
 import de.boscall.dto.Alarm
+import java.util.*
 
 
 class BosCallMessagingService : FirebaseMessagingService() {
@@ -20,7 +21,7 @@ class BosCallMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         var alarm: Alarm = Alarm(remoteMessage.data.get("title")
-                ?: "Kein Alarmtitel", remoteMessage.data.get("text") ?: "Kein Alarmtext")
+                ?: "Kein Alarmtitel", remoteMessage.data.get("text") ?: "Kein Alarmtext", Date())
         AlarmDatabase.getInstance(applicationContext).alarmDao().insert(alarm)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val toneString = sharedPreferences.getString("itmDefaultAlarmtone", "content://media/internal/audio/media/323")

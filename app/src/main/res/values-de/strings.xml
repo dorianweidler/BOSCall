@@ -30,4 +30,5 @@
     <string name="dlg_userNameUnset_btnSetNow">Jetzt setzen</string>
     <string name="unitReader_toast_reading_failed">Lesen des QR-Codes fehlgeschlagen!</string>
     <string name="splash_Loading">Laden...</string>
+    <string name="dlg_confirmAllAlarmsDelete_message">Sind Sie sicher alle Alarmierungen zu löschen? Die Aktion ist nicht umkehrbar!</string>
 </resources>

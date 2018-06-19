@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import de.boscall.dto.Alarm
 import kotlinx.android.synthetic.main.list_node.view.*
+import java.text.SimpleDateFormat
 
 class AlarmAdapter(private var items: MutableList<Alarm>) : RecyclerView.Adapter<AlarmAdapter.VH>() {
 
@@ -43,7 +44,8 @@ class AlarmAdapter(private var items: MutableList<Alarm>) : RecyclerView.Adapter
             LayoutInflater.from(parent.context).inflate(R.layout.list_node, parent, false)) {
 
         fun bind(alarm: Alarm) = with(itemView) {
-
+            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+            tvDate.text = sdf.format(alarm.date)
             tvTitle.text = alarm.title
             tvContent.text = alarm.text
             Log.d(javaClass.name, "Alarmtext: ${alarm.text} - ${tvContent.text}")
