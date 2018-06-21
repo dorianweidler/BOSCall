@@ -24,6 +24,10 @@
 
 \usepackage[ngerman]{babel} % Specify a different language here - english by default
 
+\usepackage{eurosym}
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{20AC}{\euro}
+
 \usepackage{tocloft}
 
 \usepackage{lipsum} % Required to insert dummy text. To be removed otherwise
@@ -52,6 +56,13 @@
 
 \usepackage{hyperref} % Required for hyperlinks
 \hypersetup{hidelinks,colorlinks,breaklinks=true,urlcolor=color2,citecolor=color1,linkcolor=color1,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+
+%----------------------------------------------------------------------------------------
+%	TABLES
+%----------------------------------------------------------------------------------------
+
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
 
 %----------------------------------------------------------------------------------------
 %	ARTICLE INFORMATION

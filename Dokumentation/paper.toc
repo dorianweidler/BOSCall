@@ -1,10 +1,10 @@
 \select@language {ngerman}
 \contentsline {section}{\numberline {1}Einleitung}{1}{section.1}
-\contentsline {section}{\numberline {2}Kostenvergleich}{1}{section.2}
-\contentsline {section}{\numberline {3}Funktionsweise}{1}{section.3}
-\contentsline {section}{\numberline {4}Problemstellungen}{1}{section.4}
-\contentsline {section}{\numberline {5}Installation}{1}{section.5}
-\contentsline {section}{\numberline {6}Fazit}{1}{section.6}
-\contentsline {section}{Abbildungsverzeichnis}{1}{section*.1}
-\contentsline {section}{Literatur}{1}{section*.2}
+\contentsline {section}{\numberline {2}Kostenvergleich}{2}{section.2}
+\contentsline {section}{\numberline {3}Funktionsweise}{2}{section.3}
+\contentsline {section}{\numberline {4}Problemstellungen}{2}{section.4}
+\contentsline {section}{\numberline {5}Installation}{2}{section.5}
+\contentsline {section}{\numberline {6}Fazit}{2}{section.6}
+\contentsline {section}{Abbildungsverzeichnis}{2}{section*.3}
+\contentsline {section}{Literatur}{2}{section*.4}
 \contentsfinish 
