@@ -2,7 +2,7 @@
 \label{sec:funktionsweise}
 Prinzipiell dreht sich die App um zwei essentielle Funktionen. Die Registration und der Alarmempfang. Zusätzlich findet auch noch ein wichtiger Abgleich der registrierten Einheiten mit dem Backend System statt. Bei dem Abgleich werden Einheiten lokal deregistriert, falls der Benutzer im Backend keine Zuordnung mehr zu ihr hatte. Diese drei Funktionalitäten werden nachfolgend genauer beschrieben. Es gibt natürlich noch weitere Funktionen, die aber entweder im Kapitel~\ref{sec:problemstellungen} bereits Erwähnung finden oder schlicht nicht erwähnenswert sind.
 \subsection{Registration}
-\begin{figure}[htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{include/img/registration}
 	\caption{Registration}
@@ -13,7 +13,7 @@ Anforderungen an die Registration war eine möglichst geringe Komplexität und z
 Um die Komplexität zu reduzieren wird jedem Leiter einer Einheit ein QR-Code ausgestellt, der dazu dient, dass sich Mitglieder registrieren können. Es ist für den Anwender also nur erforderlich, dass er seinen Namen eingibt und einen QR-Code mit seiner Smartphone Kamera scannt. In diesem QR-Code befinden sich alle Details, die zur Registration erforderlich sind. Zum Beispiel die ID der Einheit (UnitID) und der private Schlüssel (Secret). Zusätzlich sendet das Gerät bei der Registrationsanfrage den eigenen Gerätetoken (Devicetoken) mit. Damit können Push Nachrichten gezielt an das Endgerät gesendet werden.
 
 \subsection{Alarmempfang}
-\begin{figure*}[htbp]
+\begin{figure*}[H]
 	\centering
 	\includegraphics[width=\linewidth]{include/img/alarmablauf}
 	\caption{Alarmablauf}

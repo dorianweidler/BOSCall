@@ -40,6 +40,12 @@ Um diese Abmeldung zu realisieren muss die Schnittstelle eine weitere Funktional
 \end{figure}
 Zuletzt muss diese Schnittstelle auch einen Endpunkt bieten um alle aktuell registrierten Einheiten eines Benutzers auszulesen. Diese muss \textit{/units} mit POST angeboten werden. Das ist zwar nicht absolut REST-konform, aber die GET-Methode bietet keine Möglichkeit einen RequestBody anzuhängen. Parameter, die direkt in der URL mitgegeben werden, können unter Umständen abgehört werden. Im Body liegt ein RetrieveUnitsRequest, der in Abbildung~\ref{fig:retrieveUnitsRequest} zu sehen ist.
 
+\begin{figure*}
+	\centering
+	\includegraphics[width=\linewidth]{include/img/google-services-json}
+	\caption{google-services.json Download}
+	\label{fig:google-services-json-download}
+\end{figure*}
 
 \subsubsection{Tokenschnittstelle}
 \begin{figure}[h]
@@ -49,13 +55,6 @@ Zuletzt muss diese Schnittstelle auch einen Endpunkt bieten um alle aktuell regi
 	\label{fig:updateTokenRequest}
 \end{figure}
 Die Tokenschnittstelle dient der App dazu, bei einer Änderung eines Tokens eines Benutzers diesen in der Datenbank des Backends zu aktualisieren. Da der Token die einzige Möglichkeit ist, das Endgerät mittels Push Nachrichten zu adressieren sind solche Anfragen enorm wichtig. Zusätzlich wird der Endpunkt genutzt um bei einer lokalen Änderung eines Benutzernamens diesen auch in der Datenbank des Backends zu aktualisieren. Der Endpunkt \textit{/updateToken} muss für die POST-Methode angeboten werden. Es wird hierbei ein UpdateTokenRequest, zu sehen in Abbildung~\ref{fig:updateTokenRequest}, mitgeschickt. Als positives Ergebnis wird der Statuscode 200 (OK) erwartet.
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=\linewidth]{include/img/google-services-json}
-	\caption{google-services.json Download}
-	\label{fig:google-services-json-download}
-\end{figure*}
 
 \subsubsection{Kalenderschnittstelle}
 Die letzte erforderliche Schnittstelle ist die Kalenderschnittstelle, die bei Anfrage alle Termine eines Benutzers zurückliefert. Dieser Endpunkt ist unter \textit{/calendar} mittels GET erreichbar und es wurde sich deutlich mehr an die Vorgaben des REST Stils gehalten. Hier gilt es in Zukunft zu evaluieren, ob die Sicherheit des API Schlüssels in den Parametern der URL gewährleistet ist. Jedenfalls wird die UserId und der API Schlüssel als Parameter in der URL übertragen. Ein Beispiel mit der UserId 42 und dem API Schlüssel 1234567890: \textit{/calendar/userId=42\&apiKey=1234567890}.

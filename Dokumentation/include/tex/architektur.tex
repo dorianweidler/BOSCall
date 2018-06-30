@@ -1,0 +1,18 @@
+\section{Architektur}
+Die App startet immer mit einem Splashscreen, dieser findet sich in der SplashActivity. Dort können Dinge geladen werden, die im Anschluss in der App dringend benötigt werden. Beispielsweise findet dort der Abgleich der Einheiten statt. Das heißt es werden alle lokal gespeicherten Einheiten gelöscht, denen das Gerät nicht mehr angehört.
+
+Im Anschluss startet die MainActivity. Da die App eine BottomNavigationView nutzt, gibt es nur wenige Activities, die wichtigste ist die MainActivity. In ihr wird auch festgelegt, welches Fragment geladen wird, wenn der Benutzer etwas in der Navigation wählt. 
+
+Außer den bereits erwähnten Activities gibt es nur noch die UnitReaderActivity. Diese wird beim Registrieren einer Einheit geöffnet und enthält einen QR-Code Reader, der nach erfolgreichem Scannen wieder geschlossen wird.
+
+Im services-Package befinden sich die Datenbank-"-Abstraktionen, Webservice-"-Abstraktionen und die be"-nö"-tig"-ten Services für Firebase Cloud Messaging (BosCallMessagingService - Wird bei jeder Push Nachricht benutzt, BosCallIdService - Wird bei Änderungen des Gerätetokens für FCM benötigt).
+
+Das dbTasks-Paket enthält asynchron aus"-zu"-füh"-rende Aufgaben um mit der SQLite Datenbank zu interagieren. Die dort enthaltenen Operationen dauern an dem Ort, an dem sie ausgeführt werden, zu lange und werden automatisch durch das Android Betriebssystem unterbunden, sofern sie synchron ausgeführt werden.
+
+Innerhalb des dao-Package befinden sich Interfaces, die in Kombination mit Room genutzt werden können um mit der SQLite Datenbank zu interagieren. Darin befinden sich Methoden um mit den abstrahierten Daten zu arbeiten, beispielsweise neue einzufügen, einzelne oder alle zu löschen.
+
+Im util-Paket enthält Klassen um die lokal gespeicherten Registrationen zu speichern und zu laden. Dabei handelt es sich noch um die Persistierungsvariante auf dem Dateisystem im JSON Format, anstatt der Nutzung der SQLite Datenbank.
+
+Das dto-Package besitzt Klassen allerhand reine Datenklassen die an den verschiedensten Stellen der App benötigt werden. Die auf Request endenden Klassen werden beispielsweise zur Befüllung der Anfragen an die Webservices genutzt.
+
+Das letzte Paket constants, enthält ein Enum mit den Service Konfigurationsdaten. Hier kann angepasst werden, welche URL aufgerufen wird um den Webservice zu erreichen.
