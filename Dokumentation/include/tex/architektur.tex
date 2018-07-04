@@ -9,10 +9,10 @@ Im services-Package befinden sich die Datenbank-"-Abstraktionen, Webservice-"-Ab
 
 Das dbTasks-Paket enthält asynchron aus"-zu"-füh"-rende Aufgaben um mit der SQLite Datenbank zu interagieren. Die dort enthaltenen Operationen dauern an dem Ort, an dem sie ausgeführt werden, zu lange und werden automatisch durch das Android Betriebssystem unterbunden, sofern sie synchron ausgeführt werden.
 
-Innerhalb des dao-Package befinden sich Interfaces, die in Kombination mit Room genutzt werden können um mit der SQLite Datenbank zu interagieren. Darin befinden sich Methoden um mit den abstrahierten Daten zu arbeiten, beispielsweise neue einzufügen, einzelne oder alle zu löschen.
+Innerhalb des dao-Package befinden sich Interfaces, die in Kombination mit Room genutzt werden können um mit der SQLite Datenbank zu interagieren. Darin befinden sich Methoden, um mit den abstrahierten Daten zu arbeiten, beispielsweise neue einzufügen, einzelne oder alle zu löschen.
 
-Im util-Paket enthält Klassen um die lokal gespeicherten Registrationen zu speichern und zu laden. Dabei handelt es sich noch um die Persistierungsvariante auf dem Dateisystem im JSON Format, anstatt der Nutzung der SQLite Datenbank.
+Im util-Paket enthält Klassen, um die lokal gespeicherten Registrationen zu speichern und zu laden. Dabei handelt es sich noch um die Persistierungsvariante auf dem Dateisystem im JSON Format, anstatt der Nutzung der SQLite Datenbank.
 
 Das dto-Package besitzt Klassen allerhand reine Datenklassen die an den verschiedensten Stellen der App benötigt werden. Die auf Request endenden Klassen werden beispielsweise zur Befüllung der Anfragen an die Webservices genutzt.
 
-Das letzte Paket constants, enthält ein Enum mit den Service Konfigurationsdaten. Hier kann angepasst werden, welche URL aufgerufen wird um den Webservice zu erreichen.
+Das letzte Paket constants, enthält ein Enum mit den Service Konfigurationsdaten. Hier kann angepasst werden, welche URL aufgerufen wird, um den Webservice zu erreichen.

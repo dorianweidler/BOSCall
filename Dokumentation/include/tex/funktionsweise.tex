@@ -1,6 +1,6 @@
 \section{Funktionsweise}
 \label{sec:funktionsweise}
-Prinzipiell dreht sich die App um zwei essentielle Funktionen. Die Registration und der Alarmempfang. Zusätzlich findet auch noch ein wichtiger Abgleich der registrierten Einheiten mit dem Backend System statt. Bei dem Abgleich werden Einheiten lokal deregistriert, falls der Benutzer im Backend keine Zuordnung mehr zu ihr hatte. Diese drei Funktionalitäten werden nachfolgend genauer beschrieben. Es gibt natürlich noch weitere Funktionen, die aber entweder im Kapitel~\ref{sec:problemstellungen} bereits Erwähnung finden oder schlicht nicht erwähnenswert sind.
+Prinzipiell dreht sich die App um zwei essenzielle Funktionen. Die Registration und der Alarmempfang. Zusätzlich findet auch noch ein wichtiger Abgleich der registrierten Einheiten mit dem Backend System statt. Bei dem Abgleich werden Einheiten lokal deregistriert, falls der Benutzer im Backend keine Zuordnung mehr zu ihr hatte. Diese drei Funktionalitäten werden nachfolgend genauer beschrieben. Es gibt natürlich noch weitere Funktionen, die aber entweder im Kapitel~\ref{sec:problemstellungen} bereits Erwähnung finden oder schlicht nicht erwähnenswert sind.
 \subsection{Registration}
 \begin{figure}[H]
 	\centering
@@ -10,7 +10,7 @@ Prinzipiell dreht sich die App um zwei essentielle Funktionen. Die Registration 
 \end{figure}
 Anforderungen an die Registration war eine möglichst geringe Komplexität und zugleich eine hohe Sicherheit zu realisieren. Der Fokus lag aber zwecks des begrenzten Entwicklungszeitraums auf der geringen Komplexität.
 
-Um die Komplexität zu reduzieren wird jedem Leiter einer Einheit ein QR-Code ausgestellt, der dazu dient, dass sich Mitglieder registrieren können. Es ist für den Anwender also nur erforderlich, dass er seinen Namen eingibt und einen QR-Code mit seiner Smartphone Kamera scannt. In diesem QR-Code befinden sich alle Details, die zur Registration erforderlich sind. Zum Beispiel die ID der Einheit (UnitID) und der private Schlüssel (Secret). Zusätzlich sendet das Gerät bei der Registrationsanfrage den eigenen Gerätetoken (Devicetoken) mit. Damit können Push Nachrichten gezielt an das Endgerät gesendet werden.
+Um die Komplexität zu reduzieren wird jedem Leiter einer Einheit ein QR-Code ausgestellt, der dazu dient, dass sich Mitglieder registrieren können. Es ist für den Anwender also nur erforderlich, dass er seinen Namen eingibt und einen QR-Code mit seinem Smartphone scannt. In diesem QR-Code befinden sich alle Details, die zur Registration erforderlich sind. Zum Beispiel die ID der Einheit (UnitID) und der private Schlüssel (Secret). Zusätzlich sendet das Gerät bei der Registrationsanfrage den eigenen Gerätetoken (Devicetoken) mit. Damit können Push Nachrichten gezielt an das Endgerät gesendet werden.
 
 \subsection{Alarmempfang}
 \begin{figure*}[H]
@@ -21,12 +21,12 @@ Um die Komplexität zu reduzieren wird jedem Leiter einer Einheit ein QR-Code au
 \end{figure*}
 Der Ablauf der Alarmierung, graphisch in Abbildung~\ref{fig:alarmablauf} zu sehen, teilt sich in drei Schritte. Zunächst wird der Alarm über eine Auswertung des analogen Funks erkannt und es wird die E-Mail der Leitstelle mit den Einsatzdetails ausgewertet. Dieser Prozess wird nicht durch die Anwendungen abgedeckt, die im Rahmen der Veranstaltung entwickelt wurden. Es gibt bereits eine funktionierende Bestandsanwendung, die sich relativ problemlos auf die Unterstützung von BOSCall ändern lässt.
 
-Im nächsten Schritt wird durch die soeben genannte Anwendung per HTTP Aufruf (REST) ein Alarmprozess angestoßen. Der Dienst, der dabei aufgerufen wurde, liegt dabei auf einem öffentlichen virtuellen Server. Der Service wertet nun den eingegangenen Alarm aus indem er die Einheit aus der Anfrage bezieht. Mittels diesem Datum bekommt er aus einer Datenbank alle registrierten Endgeräte dieser Einheit. Deren Token nutzt er um über die API von Firebase eine Push Nachricht an das Gerät zu senden.
+Im nächsten Schritt wird durch die soeben genannte Anwendung per HTTP Aufruf (REST) ein Alarmprozess angestoßen. Der Dienst, der dabei aufgerufen wurde, liegt dabei auf einem öffentlichen virtuellen Server. Der Service wertet nun den eingegangenen Alarm aus, indem er die Einheit aus der Anfrage bezieht. Mittels diesem Datum bekommt er aus einer Datenbank alle registrierten Endgeräte dieser Einheit. Deren Token nutzt er, um über die API von Firebase eine Push Nachricht an das Gerät zu senden.
 
 Im letzten Schritt wird die erhaltene Push Nachricht auf dem Endgerät ausgewertet. Diese sogenannte Data Message enthält alle Daten, die für die Darstellung einer Alarmierung benötigt werden, also Alarmtitel und Alarmtext. Es gilt hier zwischen Data Message und einer sogenannten Notification Message zu unterscheiden. Diese Unterscheidung bereitete zunächst Probleme, weshalb diese beiden Typen weiter im Kapitel~\ref{sec:problemstellungen} erläutert werden.
 
 \subsection{Einheitenabgleich}
-Wie eingangs beschrieben ist das Ziel des Einheitenabgleichs, dass lokal keine Einheiten mehr registriert erscheinen, deren Registration auf dem Backend nicht vorliegt. Schließlich ist die Single Source of Truth (SSOT) das Backend. Die Daten, die zum Senden jedes Alarm notwendig sind stammen nämlich aus dem Backend. Aktuell ist es nur vorgesehen, dass sich Benutzer für Einheiten registrieren. Es ist zwar möglich, dass ein Administrator einen Benutzer in der Datenbank zu einer weiteren Einheit hinzufügt, diese erscheint dann aber nicht in der Übersicht der Einheiten in der App des Benutzers. Er kann sich dann auch nicht von dieser Einheit abmelden. Die Alarmierungen werden aber trotzdem an das Endgerät ausgeliefert.
+Wie eingangs beschrieben ist das Ziel des Einheitenabgleichs, dass lokal keine Einheiten mehr registriert erscheinen, deren Registration auf dem Backend nicht vorliegt. Schließlich ist die Single Source of Truth (SSOT) das Backend. Die Daten, die zum Senden jedes Alarms notwendig sind stammen nämlich aus dem Backend. Aktuell ist es nur vorgesehen, dass sich Benutzer für Einheiten registrieren. Es ist zwar möglich, dass ein Administrator einen Benutzer in der Datenbank zu einer weiteren Einheit hinzufügt, diese erscheint dann aber nicht in der Übersicht der Einheiten in der App des Benutzers. Er kann sich dann auch nicht von dieser Einheit abmelden. Die Alarmierungen werden aber trotzdem an das Endgerät ausgeliefert.
 
 \begin{figure}[H]
 	\centering
@@ -35,5 +35,5 @@ Wie eingangs beschrieben ist das Ziel des Einheitenabgleichs, dass lokal keine E
 	\label{fig:einheitenabgleich}
 \end{figure}
 
-In Abbildung~\ref{fig:einheitenabgleich} ist der Ablauf dieses Abgleichs zu sehen. Er findet jedes mal statt, wenn die App geöffnet wird. Aus diesem Grund wurde auch ein Ladebildschirm implementiert. Es wird die BenutzerID und der bei der Registration zugeteilte API Schlüssel mit dem Backend ausgetauscht. Nach erfolgreicher Prüfung wird dann eine Liste mit allen EinheitenIDs an das Endgerät geschickt. Im Anschluss werden alle Einheiten entfernt, deren IDs nicht in der Liste sind.
+In Abbildung~\ref{fig:einheitenabgleich} ist der Ablauf dieses Abgleichs zu sehen. Er findet jedes Mal statt, wenn die App geöffnet wird. Aus diesem Grund wurde auch ein Ladebildschirm implementiert. Es wird die BenutzerID und der bei der Registration zugeteilte API Schlüssel mit dem Backend ausgetauscht. Nach erfolgreicher Prüfung wird dann eine Liste mit allen EinheitenIDs an das Endgerät geschickt. Im Anschluss werden alle Einheiten entfernt, deren IDs nicht in der Liste sind.
 
